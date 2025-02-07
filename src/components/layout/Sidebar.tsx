@@ -1,6 +1,7 @@
 "use client";
 
 import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import { IoIosAddCircleOutline } from "react-icons/io";
 
 import {
   Sidebar,
@@ -14,30 +15,10 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
+import { MdDashboard, MdSensors } from "react-icons/md";
+import { menuItems } from "@/lib/navigation";
 
 // Menu items.
-const items = [
-  {
-    title: "Dashboard",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Dispositifs",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Ajout Dispositif",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Paramètres",
-    url: "#",
-    icon: Settings,
-  },
-];
 
 export function AppSidebar() {
   return (
@@ -50,6 +31,7 @@ export function AppSidebar() {
             width={50}
             height={50}
           />
+
           <h1 className="text-xl font-bold">Ensim IOT</h1>
         </div>
       </SidebarHeader>
@@ -57,7 +39,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild className="  p-6">
                     <a href={item.url}>
