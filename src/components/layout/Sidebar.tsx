@@ -17,10 +17,12 @@ import {
 import Image from "next/image";
 import { MdDashboard, MdSensors } from "react-icons/md";
 import { menuItems } from "@/lib/navigation";
+import { useMenu } from "@/context/MenuContext";
 
 // Menu items.
 
 export function AppSidebar() {
+  const { activeMenu, setActiveMenu } = useMenu();
   return (
     <Sidebar className="mt-17">
       <SidebarHeader>
@@ -41,7 +43,13 @@ export function AppSidebar() {
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild className="  p-6">
+                  <SidebarMenuButton
+                    asChild
+                    className={`p-6 ${
+                      activeMenu === item.title && "bg-gray-200"
+                    }`}
+                    onClick={() => setActiveMenu(item.title)}
+                  >
                     <a href={item.url}>
                       <item.icon />
                       <span className="text-[16px]">{item.title}</span>

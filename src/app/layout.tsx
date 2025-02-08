@@ -5,6 +5,7 @@ import React from "react";
 import Header from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { MenuProvider } from "@/context/MenuContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,9 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
       >
-        <div className="flex flex-1 flex-col h-full">
-          <main className="flex-1 p-4 h-full">{children}</main>
-        </div>
+        <MenuProvider>
+          <div className="flex flex-1 flex-col h-full">
+            <main className="flex-1 p-4 h-full">{children}</main>
+          </div>
+        </MenuProvider>
       </body>
     </html>
   );
