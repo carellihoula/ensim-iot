@@ -37,7 +37,7 @@ const SensorList = () => {
       {sensorList.map((sensor, index) => (
         <Card
           key={index}
-          className="flex flex-col items-center justify-between px-4 py-2 w-64 border rounded-lg shadow-md bg-white box-content"
+          className="flex flex-col items-center justify-between p-4  w-64 border rounded-lg shadow-md bg-white box-content"
         >
           {/* Toggle pour activer/désactiver le capteur */}
           <div className="flex justify-end mt-1  w-full ">
