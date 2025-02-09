@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Sensor } from "../types/sensorTypes";
 import { fakeData } from "@/lib/fakeData";
+import { Copy } from "lucide-react";
 
 export default function AddSensorForm() {
   const [sensor, setSensor] = useState<Sensor>({
@@ -27,8 +28,18 @@ export default function AddSensorForm() {
 
   const [tempNames, setTempNames] = useState<Record<string, string>>({});
   const [showJson, setShowJson] = useState(false);
-
+  const [copied, setCopied] = useState(false);
   const availableMeasures = convert().measures();
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(sensor, null, 2));
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset après 2s
+    } catch (err) {
+      console.error("Échec de la copie :", err);
+    }
+  };
 
   const addMeasurement = () => {
     const newId = `new_${Date.now()}`;
@@ -118,7 +129,7 @@ export default function AddSensorForm() {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2  gap-6 p-6">
       <Card className="p-6 w-full max-w-[700px]">
         <h2 className="text-xl font-semibold mb-4 text-center">
           Ajouter un Capteur
@@ -248,7 +259,7 @@ export default function AddSensorForm() {
       </Card>
 
       {/* Affichage du JSON repliable */}
-      <div className="flex flex-col gap-6 max-w-[700px]">
+      <div className=" flex-col gap-6 max-w-[700px] hidden lg:flex">
         <Card
           className="flex items-center gap-6 p-6 w-full max-w-[700px] h-[70px] cursor-pointer"
           onClick={() => setShowJson(!showJson)}
@@ -269,9 +280,22 @@ export default function AddSensorForm() {
           </div>
         </Card>
         {showJson && (
-          <pre className="bg-gray-900 text-white p-4 rounded-lg overflow-auto text-sm max-h-60 w-full h-[400%]">
-            <code>{JSON.stringify(sensor, null, 2)}</code>
-          </pre>
+          <div className="relative bg-gray-900 text-white p-4 rounded-lg overflow-auto text-sm max-h-60 w-full">
+            <button
+              onClick={handleCopy}
+              className="absolute top-2 right-2 p-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
+            >
+              <Copy className="w-5 h-5 text-white p-2 box-content" />
+            </button>
+            <pre>
+              <code>{JSON.stringify(sensor, null, 2)}</code>
+            </pre>
+            {copied && (
+              <div className="absolute bottom-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
+                Copié !
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>
