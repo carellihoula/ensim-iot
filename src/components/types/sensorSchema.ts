@@ -2,8 +2,9 @@ import { z } from "zod";
 
 // Schéma pour une mesure individuelle (valeur + unité + date)
 const MeasurementSchema = z.object({
-  value: z.number(),
+  value: z.union([z.number(), z.string()]),
   measure: z.string(),
+  unit: z.string().optional(),
   date: z.string().datetime(),
 });
 
