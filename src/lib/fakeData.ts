@@ -6,6 +6,7 @@ export const fakeData: Sensors = {
       payload: {
         name: "TempSensor-X100",
         owner_id: "owner_123",
+        active: true,
         data: {
           temperature: [
             { value: 35, measure: "temperature", date: "2025-02-07T12:00:00Z" },
@@ -24,6 +25,7 @@ export const fakeData: Sensors = {
       payload: {
         name: "TempSensor-X100",
         owner_id: "owner_123",
+        active: true,
         data: {
           temperature: [
             { value: 35, measure: "temperature", date: "2025-02-07T12:00:00Z" },
@@ -42,6 +44,7 @@ export const fakeData: Sensors = {
       payload: {
         name: "TempSensor-X100",
         owner_id: "owner_123",
+        active: true,
         data: {
           temperature: [
             { value: 35, measure: "temperature", date: "2025-02-07T12:00:00Z" },
@@ -61,6 +64,7 @@ export const fakeData: Sensors = {
       payload: {
         name: "PressureSensor-P200",
         owner_id: "owner_456",
+        active: true,
         data: {
           pressure: [
             { value: 1012, measure: "pressure", date: "2025-02-07T12:00:00Z" },
