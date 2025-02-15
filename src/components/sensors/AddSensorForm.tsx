@@ -125,7 +125,7 @@ export default function AddSensorForm() {
       },
     });
     console.log("Dispositif ajouté :", sensor);
-    alert("Dispositif ajouté avec succès !");
+    //alert("Dispositif ajouté avec succès !");
   };
 
   return (

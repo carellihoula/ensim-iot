@@ -1,6 +1,7 @@
 "use client";
 
 import { Sensor } from "@/components/types/sensorTypes";
+import { mqttConfig } from "@/lib/mqttBrokerInfo";
 import { Buffer } from "buffer"; // Nécessaire si 'Buffer' est utilisé
 import mqtt, { MqttClient } from "mqtt";
 import { env } from "process";
@@ -35,19 +36,20 @@ export const MQTTProvider: React.FC<{ children: ReactNode }> = ({
   >("disconnected");
 
   useEffect(() => {
-    const mqttUrl = env.MQTT_URL;
-    console.log(mqttUrl);
-    const mqttUsername = env.MQTT_USERNAME;
-    const mqttPassword = env.MQTT_PASSWORD;
+    //console.log(mqttPassword);
 
-    if (!mqttUrl || !mqttUsername || !mqttPassword) {
+    if (
+      !mqttConfig.mqttUrl ||
+      !mqttConfig.mqttUsername ||
+      !mqttConfig.mqttPassword
+    ) {
       console.error("Missing MQTT configuration values.");
       return;
     }
-    mqttUsername;
-    const client: MqttClient = mqtt.connect(mqttUrl, {
-      username: mqttUsername,
-      password: mqttPassword,
+    mqttConfig.mqttUsername;
+    const client: MqttClient = mqtt.connect(mqttConfig.mqttUrl, {
+      username: mqttConfig.mqttUsername,
+      password: mqttConfig.mqttPassword,
       rejectUnauthorized: true, // Vérifie la validité du certificat
     });
 
