@@ -16,11 +16,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Radix overlay correction */
-[data-state="open"] .radix-dialog-overlay {
-  background-color: rgba(0, 0, 0, 0.5) !important;
-}
-
 @layer base {
   :root {
     --background: 0 0% 100%;

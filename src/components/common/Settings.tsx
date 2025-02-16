@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Copy, Download } from "lucide-react";
 
 const brokerInfo = {
-  url: "mqtts://broker.example.com",
-  port: 8883,
-  userId: "12345",
-  username: "mqtt_user",
-  password: "securepassword",
-  tlsCert: "/certs/mqtt_cert.pem",
+  url: process.env.NEXT_PUBLIC_MQTT_URL,
+  port: process.env.NEXT_PUBLIC_PORT,
+  //userId: "12345",
+  username: process.env.NEXT_PUBLIC_MQTT_USERNAME,
+  password: process.env.NEXT_PUBLIC_MQTT_PASSWORD,
+  tlsCert: "/tlsCert/emqxsl-ca.crt",
 };
 
 export default function Settings() {
@@ -28,8 +28,8 @@ export default function Settings() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen p-6 bg-gray-50">
-      <Card className="w-full max-w-lg p-6 space-y-6 shadow-xl rounded-xl border border-gray-200">
+    <div className="flex flex-col items-center justify-start min-h-screen p-6  ">
+      <Card className="w-full max-w-[800px] p-6 space-y-6 shadow-xl rounded-xl border border-gray-200">
         <h1 className="text-2xl font-semibold text-center text-gray-800">
           MQTT Connection Information
         </h1>
