@@ -51,10 +51,14 @@ const SensorChart = () => {
   const data = selectedSensorData ? transformData(selectedSensorData.data) : [];
 
   return (
-    <div>
-      {/* Sélecteur de capteur */}
-      <div style={{ marginBottom: "20px" }}>
-        <label htmlFor="sensor-select" style={{ marginRight: "10px" }}>
+    <div className="flex flex-col items-center lg:gap-6">
+      {/* Sensor selector */}
+      <div className="flex items-center font-bold mb-4 ">
+        <label
+          htmlFor="sensor-select"
+          style={{ marginRight: "10px" }}
+          className="hidden sm:flex"
+        >
           Choisir un capteur :
         </label>
         <Select
@@ -77,7 +81,7 @@ const SensorChart = () => {
         </Select>
       </div>
 
-      {/* Graphique */}
+      {/* Sensor Graphic */}
       <ResponsiveContainer width="100%" height={400}>
         <LineChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
