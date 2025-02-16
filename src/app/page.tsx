@@ -6,8 +6,7 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import AddSensorForm from "@/components/sensors/AddSensorForm";
 import SensorList from "@/components/sensors/SensorList";
 import Sensorshandler from "@/components/sensors/SensorsHandler";
-import Temp from "@/components/sensors/temp";
-import Temp2 from "@/components/sensors/temp2";
+import Visualization from "@/components/sensors/Visualization";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
@@ -28,6 +27,8 @@ export default function Home() {
       case menuItems[2].title:
         return <AddSensorForm />;
       case menuItems[3].title:
+        return <Visualization />;
+      case menuItems[4].title:
         return <Settings />;
       default:
         return <p className="text-center">Sélectionnez un menu</p>;

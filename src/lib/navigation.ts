@@ -1,6 +1,7 @@
 import { Settings } from "lucide-react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdDashboard, MdSensors } from "react-icons/md";
+import { GoGraph } from "react-icons/go";
 
 export const menuItems = [
   {
@@ -17,6 +18,11 @@ export const menuItems = [
     title: "Ajout Dispositif",
     url: "#",
     icon: IoIosAddCircleOutline,
+  },
+  {
+    title: "Visualisation",
+    url: "#",
+    icon: GoGraph,
   },
   {
     title: "Paramètres",
