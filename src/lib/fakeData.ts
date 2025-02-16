@@ -6,6 +6,7 @@ export const fakeData: Sensors = {
       payload: {
         name: "TempSensor-X100",
         owner_id: "owner_123",
+        id_sensor: "e200544",
         active: true,
         data: {
           temperature: [
@@ -23,8 +24,9 @@ export const fakeData: Sensors = {
     },
     {
       payload: {
-        name: "TempSensor-X100",
+        name: "Cano-X100",
         owner_id: "owner_123",
+        id_sensor: "e772005445555",
         active: true,
         data: {
           temperature: [
@@ -42,8 +44,9 @@ export const fakeData: Sensors = {
     },
     {
       payload: {
-        name: "TempSensor-X100",
+        name: "BME-280",
         owner_id: "owner_123",
+        id_sensor: "J20054466dj",
         active: true,
         data: {
           temperature: [
@@ -62,8 +65,9 @@ export const fakeData: Sensors = {
 
     {
       payload: {
-        name: "PressureSensor-P200",
+        name: "DHT22-P200",
         owner_id: "owner_456",
+        id_sensor: "en200544wz",
         active: true,
         data: {
           pressure: [

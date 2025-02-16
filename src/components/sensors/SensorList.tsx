@@ -7,14 +7,31 @@ import { Trash, Edit } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { fakeData } from "@/lib/fakeData";
 import { MdSensors } from "react-icons/md";
+import { ConfirmDeleteDialog } from "../dialogs/ConfirmDeleteDialog";
+import { Sensor } from "../types/sensorTypes";
 
 const SensorList = () => {
   const [sensorList, setSensorList] = useState(fakeData.sensors);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
 
-  const deleteSensor = (id: number) => {
-    setSensorList((prev) => prev.filter((_, index) => index !== id));
+  //Delete sensors with dialog
+  const handleDelete = (id: number | string) => {
+    if (selectedSensor?.payload.id_sensor !== null) {
+      /*setSensorList((prev) =>
+        prev.filter((_, index) => index !== selectedSensorId)
+      );*/
+
+      setSensorList((prev) =>
+        prev.filter((sensor) => sensor.payload.id_sensor !== id)
+      );
+      setIsDialogOpen(false);
+    }
+    //setIsDialogOpen(false);
+    //setSensorList((prev) => prev.filter((_, index) => index !== id));
   };
 
+  //edit sensor
   const editSensor = (id: number) => {
     alert(`Modification du capteur ${id}`);
   };
@@ -39,7 +56,7 @@ const SensorList = () => {
           key={index}
           className="flex flex-col items-center justify-between p-4  w-64 border rounded-lg shadow-md bg-white box-content"
         >
-          {/* Toggle pour activer/désactiver le capteur */}
+          {/* Toggle to active/deactivate sensor */}
           <div className="flex justify-end mt-1  w-full ">
             <Switch
               checked={sensor.payload.active || false}
@@ -57,20 +74,37 @@ const SensorList = () => {
 
           {/* Actions */}
           <div className="flex items-center gap-2 mt-3">
-            {/* Bouton Modifier */}
+            {/* Edit Button */}
             <Button variant="outline" onClick={() => editSensor(index)}>
               <span>Modifier</span>
               <Edit className="w-5 h-5 text-blue-500" />
             </Button>
 
-            {/* Bouton Supprimer */}
-            <Button variant="destructive" onClick={() => deleteSensor(index)}>
+            {/* Delete Button */}
+            <Button
+              variant="destructive"
+              onClick={() => {
+                setSelectedSensor(sensor);
+                //console.log(sensor.payload.id_sensor); ==< DEBUGGING
+                setIsDialogOpen(true);
+              }}
+            >
               <span>Supprimer</span>
               <Trash className="w-5 h-5 " />
             </Button>
           </div>
         </Card>
       ))}
+      {/* Confirm Dialog*/}
+      {selectedSensor !== null && (
+        <ConfirmDeleteDialog
+          isOpen={isDialogOpen}
+          setIsOpen={setIsDialogOpen}
+          title="Delete Sensor?"
+          description="Are you sure you want to delete this sensor? This action cannot be undone."
+          onConfirm={() => handleDelete(selectedSensor.payload.id_sensor ?? "")}
+        />
+      )}
     </div>
   );
 };
