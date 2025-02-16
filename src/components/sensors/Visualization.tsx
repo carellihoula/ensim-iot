@@ -18,15 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// Importez vos données
 
-// Fonction pour transformer les données en format compatible avec Recharts
+// Function to transform data into a format compatible with Recharts
 const transformData = (sensorData: any) => {
   const transformedData: { [key: string]: any } = {};
 
   Object.entries(sensorData).forEach(([measure, values]) => {
     (values as { date: string; value: number }[]).forEach((value) => {
-      const date = new Date(value.date).toLocaleTimeString(); // Convertir la date en objet Date
+      const date = new Date(value.date).toLocaleTimeString(); // Convert date to  Date Object
       if (!transformedData[date]) {
         transformedData[date] = { date };
       }
@@ -40,14 +39,14 @@ const transformData = (sensorData: any) => {
 const SensorChart = () => {
   const [selectedSensor, setSelectedSensor] = useState(
     fakeData.sensors[0].payload.id_sensor
-  ); // Sélectionnez le premier capteur par défaut
+  ); // Select the first sensor by default
 
-  // Trouver le capteur sélectionné
+  // Find the sensor that is selected.
   const selectedSensorData = fakeData.sensors.find(
     (sensor) => sensor.payload.id_sensor === selectedSensor
   )?.payload;
 
-  // Transformer les données du capteur sélectionné
+  // Transform selected sensor data
   const data = selectedSensorData ? transformData(selectedSensorData.data) : [];
 
   return (
@@ -95,7 +94,7 @@ const SensorChart = () => {
                 key={measure}
                 type="monotone"
                 dataKey={measure}
-                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Couleur aléatoire
+                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} //Random color
               />
             ))}
         </LineChart>
