@@ -21,11 +21,11 @@ export default function Header() {
             className="pl-8 w-64"
           />
         </div>
-        <Button variant="outline">
+        <Button variant="outline" className="hidden md:flex">
           <BookOpen className="mr-2" size={18} />
           Documentation
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" className="hidden md:flex">
           <HelpCircle className="mr-2" size={18} />
           Help
         </Button>

@@ -25,7 +25,7 @@ export function ConfirmDeleteDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[400px] shadow-lg backdrop:bg-black/50 data-[state=open]:backdrop:bg-black/50">
+      <DialogContent className="sm:max-w-[400px] w-[85%] rounded-lg shadow-lg backdrop:bg-black/50 data-[state=open]:backdrop:bg-black/50">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>

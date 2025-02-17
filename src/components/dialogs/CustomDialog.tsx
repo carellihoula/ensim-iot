@@ -28,7 +28,7 @@ export function CustomDialog({
 }: CustomDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[400px] shadow-lg">
+      <DialogContent className="sm:max-w-[400px] shadow-lg w-[85%] rounded-lg">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

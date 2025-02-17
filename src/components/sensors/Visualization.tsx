@@ -58,7 +58,7 @@ const SensorChart = () => {
           style={{ marginRight: "10px" }}
           className="hidden sm:flex"
         >
-          Choisir un capteur :
+          Choisir un dispositif :
         </label>
         <Select
           value={selectedSensor}
