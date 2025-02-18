@@ -20,6 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DateRangePicker from "./DateRangePicker";
+import { COLORS } from "@/lib/colors";
 
 // Transform sensor data to a format compatible with Recharts,
 // including the full date (date + time) and a timestamp for filtering.
@@ -118,12 +119,12 @@ const SensorChart = () => {
           <Tooltip />
           <Legend />
           {selectedSensorData &&
-            Object.keys(selectedSensorData.data).map((measure) => (
+            Object.keys(selectedSensorData.data).map((measure, index) => (
               <Line
                 key={measure}
                 type="monotone"
                 dataKey={measure}
-                stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`} // Random color for each line
+                stroke={COLORS[index % COLORS.length]} // Random color for each line
               />
             ))}
         </LineChart>
