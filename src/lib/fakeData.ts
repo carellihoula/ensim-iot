@@ -65,7 +65,7 @@ export const fakeData: Sensors = {
             { value: 39, measure: "temperature", date: "2025-02-07T12:06:00Z" },
             { value: 40, measure: "temperature", date: "2025-02-07T12:07:00Z" },
             { value: 38, measure: "temperature", date: "2025-02-07T12:08:00Z" },
-            { value: 41, measure: "temperature", date: "2025-02-07T12:09:00Z" },
+            { value: 41, measure: "temperature", date: "2025-03-07T12:09:00Z" },
           ],
           humidity: [
             { value: 70, measure: "humidity", date: "2025-02-07T12:00:00Z" },
@@ -77,7 +77,7 @@ export const fakeData: Sensors = {
             { value: 78, measure: "humidity", date: "2025-02-07T12:06:00Z" },
             { value: 80, measure: "humidity", date: "2025-02-07T12:07:00Z" },
             { value: 77, measure: "humidity", date: "2025-02-07T12:08:00Z" },
-            { value: 79, measure: "humidity", date: "2025-02-07T12:09:00Z" },
+            { value: 79, measure: "humidity", date: "2025-03-07T12:09:00Z" },
           ],
         },
       },
