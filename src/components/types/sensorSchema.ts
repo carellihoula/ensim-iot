@@ -16,10 +16,11 @@ export const SensorSchema = z.object({
   payload: z.object({
     name: z.string(),
     owner_id: z.string(),
-    id_sensor: z.string().optional(),
+
     active: z.boolean().optional(),
     data: SensorDataSchema,
   }),
+  sensor_id: z.string().optional(),
 });
 
 // Schéma pour plusieurs capteurs

@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MenuProvider } from "@/context/MenuContext";
 import { MQTTProvider } from "@/context/MqttContext";
+import { SensorProvider } from "@/context/SensorContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,18 +29,21 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const userId = "674fa232ac2f55026050b4e7";
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
       >
-        <MQTTProvider>
-          <MenuProvider>
-            <div className="flex flex-1 flex-col h-full">
-              <main className="flex-1 p-4 h-full">{children}</main>
-            </div>
-          </MenuProvider>
-        </MQTTProvider>
+        <SensorProvider userId={userId}>
+          <MQTTProvider>
+            <MenuProvider>
+              <div className="flex flex-1 flex-col h-full">
+                <main className="flex-1 p-4 h-full">{children}</main>
+              </div>
+            </MenuProvider>
+          </MQTTProvider>
+        </SensorProvider>
       </body>
     </html>
   );

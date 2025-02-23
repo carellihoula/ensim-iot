@@ -11,20 +11,18 @@ import { ConfirmDeleteDialog } from "../dialogs/ConfirmDeleteDialog";
 import { Sensor } from "../types/sensorTypes";
 
 const SensorList = () => {
-  const [sensorList, setSensorList] = useState(fakeData.sensors);
+  const [sensorList, setSensorList] = useState(fakeData);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
 
   //Delete sensors with dialog
   const handleDelete = (id: number | string) => {
-    if (selectedSensor?.payload.id_sensor !== null) {
+    if (selectedSensor?.sensor_id !== null) {
       /*setSensorList((prev) =>
         prev.filter((_, index) => index !== selectedSensorId)
       );*/
 
-      setSensorList((prev) =>
-        prev.filter((sensor) => sensor.payload.id_sensor !== id)
-      );
+      setSensorList((prev) => prev.filter((sensor) => sensor.sensor_id !== id));
       setIsDialogOpen(false);
     }
     //setIsDialogOpen(false);
@@ -102,7 +100,7 @@ const SensorList = () => {
           setIsOpen={setIsDialogOpen}
           title="Delete Sensor?"
           description="Are you sure you want to delete this sensor? This action cannot be undone."
-          onConfirm={() => handleDelete(selectedSensor.payload.id_sensor ?? "")}
+          onConfirm={() => handleDelete(selectedSensor.sensor_id ?? "")}
         />
       )}
     </div>

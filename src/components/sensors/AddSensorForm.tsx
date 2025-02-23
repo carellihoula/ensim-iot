@@ -21,7 +21,7 @@ export default function AddSensorForm() {
   const [sensor, setSensor] = useState<Sensor>({
     payload: {
       name: "",
-      owner_id: fakeData.sensors[0].payload.owner_id,
+      owner_id: fakeData[0].payload.owner_id,
       data: {},
     },
   });
@@ -120,7 +120,7 @@ export default function AddSensorForm() {
     setSensor({
       payload: {
         name: "",
-        owner_id: fakeData.sensors[0].payload.owner_id,
+        owner_id: fakeData[0].payload.owner_id,
         data: {},
       },
     });

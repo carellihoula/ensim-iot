@@ -1,23 +1,13 @@
 import { BellRing } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
+import { Sensor } from "../types/sensorTypes";
 
-interface Measurement {
-  value: number;
-  measure: string;
-  date: string;
-}
-
-interface SensorProps {
-  name: string;
-  data: Record<string, Measurement[]>;
-}
-
-export default function SensorCard({ name, data }: SensorProps) {
+export default function SensorCard({ payload }: Sensor) {
   return (
     <div className="border p-4 rounded-lg shadow-md w-full max-w-md">
-      <h2 className="text-xl font-semibold mb-2">{name}</h2>
+      <h2 className="text-xl font-semibold mb-2">{payload.name}</h2>
       <div className="space-y-3">
-        {Object.entries(data).map(([measure, values]) => (
+        {Object.entries(payload.data).map(([measure, values]) => (
           <div
             key={measure}
             className="flex items-center space-x-4 rounded-md border p-4"

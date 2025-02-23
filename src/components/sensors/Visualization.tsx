@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   LineChart,
   Line,
@@ -11,7 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { fakeData } from "@/lib/fakeData";
+
 import {
   Select,
   SelectContent,
@@ -21,6 +21,12 @@ import {
 } from "@/components/ui/select";
 import DateRangePicker from "./DateRangePicker";
 import { COLORS } from "@/lib/colors";
+import { useSensors } from "@/context/SensorContext";
+import { Sensor } from "../types/sensorTypes";
+
+interface ISensor {
+  dataFromSensors: Sensor[];
+}
 
 // Transform sensor data to a format compatible with Recharts,
 // including the full date (date + time) and a timestamp for filtering.
@@ -48,22 +54,64 @@ const transformData = (sensorData: any) => {
   return dataArray;
 };
 
-const SensorChart = () => {
+const SensorChart: FC<ISensor> = ({ dataFromSensors }) => {
   // State for selecting a sensor.
   const [selectedSensor, setSelectedSensor] = useState(
-    fakeData.sensors[0].payload.id_sensor
+    //dataFromSensors[0].payload.id_sensor
+    dataFromSensors?.[0]?.sensor_id || ""
   );
+
+  //if (loading) return <p>Chargement des capteurs...</p>;
+
+  console.log(dataFromSensors);
   // States for date range filtering.
   const [startDate, setStartDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string | null>(null);
 
-  // Retrieve the selected sensor's payload.
-  const selectedSensorData = fakeData.sensors.find(
-    (sensor) => sensor.payload.id_sensor === selectedSensor
-  )?.payload;
+  // Set initial selected sensor when data loads
+  useEffect(() => {
+    if (dataFromSensors?.length > 0 && !selectedSensor) {
+      setSelectedSensor(dataFromSensors[0].sensor_id || "");
+    }
+  }, [dataFromSensors, selectedSensor]);
+
+  // Handle loading and empty states
+  if (!dataFromSensors || dataFromSensors.length === 0) {
+    return <p className="text-center">Aucun capteur disponible</p>;
+  }
+
+  const selectedSensorData = dataFromSensors.find(
+    (sensor) => sensor.sensor_id === selectedSensor
+  );
+
+  // Show loading state while data initializes
+  if (!selectedSensor) {
+    return <p className="text-center">Chargement des capteurs...</p>;
+  }
+
+  // Handle missing payload gracefully
+  if (!selectedSensorData?.payload) {
+    return (
+      <p className="text-center text-red-500">
+        Aucune donnée disponible pour ce capteur
+      </p>
+    );
+  }
+
+  /* Retrieve the selected sensor's payload.
+  const selectedSensorData = dataFromSensors.find(
+    (sensor) => sensor.sensor_id === selectedSensor
+  );*/
+
+  /*if (!selectedSensorData || !selectedSensorData.payload) {
+    console.error("Payload non trouvé pour ce capteur");
+    return <p>Erreur: données du capteur non disponibles.</p>;
+  }*/
 
   // Transform sensor data if available.
-  const data = selectedSensorData ? transformData(selectedSensorData.data) : [];
+  const data = selectedSensorData
+    ? transformData(selectedSensorData.payload.data)
+    : [];
 
   // Filter data based on the selected start and end dates.
   const filteredData = data.filter((d: any) => {
@@ -91,12 +139,9 @@ const SensorChart = () => {
             <SelectValue placeholder="Sélectionnez un capteur" />
           </SelectTrigger>
           <SelectContent>
-            {fakeData.sensors.map((sensor) => (
-              <SelectItem
-                key={sensor.payload.id_sensor}
-                value={sensor.payload.id_sensor || ""}
-              >
-                {sensor.payload.name} ({sensor.payload.id_sensor})
+            {dataFromSensors.map((sensor) => (
+              <SelectItem key={sensor.sensor_id} value={sensor.sensor_id || ""}>
+                {sensor.payload.name} ({sensor.sensor_id})
               </SelectItem>
             ))}
           </SelectContent>
@@ -119,14 +164,16 @@ const SensorChart = () => {
           <Tooltip />
           <Legend />
           {selectedSensorData &&
-            Object.keys(selectedSensorData.data).map((measure, index) => (
-              <Line
-                key={measure}
-                type="monotone"
-                dataKey={measure}
-                stroke={COLORS[index % COLORS.length]} // Random color for each line
-              />
-            ))}
+            Object.keys(selectedSensorData.payload.data).map(
+              (measure, index) => (
+                <Line
+                  key={measure}
+                  type="monotone"
+                  dataKey={measure}
+                  stroke={COLORS[index % COLORS.length]} // Random color for each line
+                />
+              )
+            )}
         </LineChart>
       </ResponsiveContainer>
     </div>

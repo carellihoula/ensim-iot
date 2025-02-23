@@ -11,11 +11,14 @@ import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { Switch } from "@/components/ui/switch";
 import { useMenu } from "@/context/MenuContext";
+import { useSensors } from "@/context/SensorContext";
+import { fakeData } from "@/lib/fakeData";
 import { menuItems } from "@/lib/navigation";
 import { BellRing } from "lucide-react";
 
 export default function Home() {
   const { activeMenu } = useMenu();
+  const { dataFromSensors } = useSensors();
 
   // Mapping des menus aux composants
   const renderContent = () => {
@@ -27,7 +30,7 @@ export default function Home() {
       case menuItems[2].title:
         return <AddSensorForm />;
       case menuItems[3].title:
-        return <Visualization />;
+        return <Visualization dataFromSensors={dataFromSensors || []} />;
       case menuItems[4].title:
         return <Settings />;
       default:

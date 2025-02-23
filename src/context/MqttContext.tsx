@@ -96,8 +96,7 @@ export const MQTTProvider: React.FC<{ children: ReactNode }> = ({
         setError(null);
         setSensors((prevSensors) => {
           const sensorIndex = prevSensors.findIndex(
-            (sensor) =>
-              sensor.payload.id_sensor === sensorData.payload.id_sensor
+            (sensor) => sensor.sensor_id === sensorData.sensor_id
           );
 
           if (sensorIndex !== -1) {
