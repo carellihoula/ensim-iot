@@ -9,12 +9,10 @@ import Sensorshandler from "@/components/sensors/SensorsHandler";
 import Visualization from "@/components/sensors/Visualization";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { Switch } from "@/components/ui/switch";
 import { useMenu } from "@/context/MenuContext";
 import { useSensors } from "@/context/SensorContext";
 import { fakeData } from "@/lib/fakeData";
 import { menuItems } from "@/lib/navigation";
-import { BellRing } from "lucide-react";
 
 export default function Home() {
   const { activeMenu } = useMenu();
