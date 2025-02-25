@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trash, Edit } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
 import { MdSensors } from "react-icons/md";
 import { ConfirmDeleteDialog } from "../dialogs/ConfirmDeleteDialog";
 import { Sensor } from "../types/sensorTypes";
@@ -12,6 +11,7 @@ import { toast } from "sonner";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMenu } from "@/context/MenuContext";
 import { menuItems } from "@/lib/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const API_URL = "http://localhost:5000/api/sensors"; // API backend
 
@@ -20,7 +20,7 @@ const SensorList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
   const { setActiveMenu, setSelectedSensorEdited } = useMenu();
-  // 📌 Fetch sensors using useQuery
+
   const {
     data: sensorList = [],
     isLoading,
@@ -32,7 +32,6 @@ const SensorList = () => {
       if (!response.ok) throw new Error("Failed to fetch sensors");
 
       const result = await response.json();
-
       if (!Array.isArray(result)) {
         console.error("API did not return an array:", result);
         return [];
@@ -42,9 +41,6 @@ const SensorList = () => {
     },
   });
 
-  console.log("Sensor List:", sensorList);
-
-  // 📌 Delete Sensor Mutation
   const deleteSensorMutation = useMutation({
     mutationFn: async (id: number | string) => {
       const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
@@ -53,7 +49,7 @@ const SensorList = () => {
     onMutate: async (id) => {
       queryClient.setQueryData(["sensors"], (oldData: Sensor[]) =>
         oldData?.filter((sensor) => sensor.sensor_id !== id)
-      ); // Supprime localement AVANT la requête API
+      );
     },
     onSuccess: () => {
       toast.success("🗑️ Sensor deleted successfully!", {
@@ -66,73 +62,52 @@ const SensorList = () => {
     },
     onError: () => {
       toast.error("❌ Error deleting sensor!");
-      queryClient.invalidateQueries({ queryKey: ["sensors"] }); // 🔄 Re-fetch en cas d'erreur
+      queryClient.invalidateQueries({ queryKey: ["sensors"] });
     },
   });
 
-  // 📌 Edit Sensor Mutation
-  const editSensorMutation = useMutation({
-    mutationFn: async (updatedSensor: Sensor) => {
-      const response = await fetch(`${API_URL}/${updatedSensor.sensor_id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedSensor),
-      });
-      if (!response.ok) throw new Error("Failed to update sensor");
-      return response.json();
-    },
-    onSuccess: (updatedSensor) => {
-      queryClient.setQueryData(["sensors"], (oldData: Sensor[]) =>
-        oldData?.map((sensor) =>
-          sensor.sensor_id === updatedSensor.sensor_id ? updatedSensor : sensor
-        )
-      ); // Met à jour localement sans refetch
-      toast.success("✏️ Sensor updated successfully!", {
-        style: {
-          backgroundColor: "#ffcc00",
-          color: "black",
-          fontWeight: "bold",
-        },
-      });
-    },
-    onError: () => {
-      toast.error("❌ Error updating sensor!");
-    },
-  });
-
-  // 📌 Function to handle sensor edit
   const editSensor = (sensor: Sensor) => {
-    setSelectedSensorEdited(sensor); // 🔥
+    setSelectedSensorEdited(sensor);
     setActiveMenu(menuItems[2].title);
   };
 
-  if (isLoading) return <p>Loading sensors...</p>;
-  if (error) return <p>Error fetching sensors</p>;
-
   return (
     <div className="flex flex-wrap justify-center gap-6 p-6">
-      {Array.isArray(sensorList) &&
+      {isLoading &&
+        Array.from({ length: 4 }).map((_, index) => (
+          <Card
+            key={index}
+            className="flex flex-col items-center justify-between p-4 w-64 border rounded-lg shadow-md bg-white"
+          >
+            <div className="w-full flex justify-end">
+              <Skeleton className="w-10 h-5 rounded" />
+            </div>
+
+            <Skeleton className="w-20 h-20 rounded-full" />
+            <Skeleton className="w-32 h-6 mt-2 rounded" />
+
+            <div className="flex items-center gap-2 mt-3">
+              <Skeleton className="w-20 h-8 rounded" />
+              <Skeleton className="w-20 h-8 rounded" />
+            </div>
+          </Card>
+        ))}
+
+      {error && (
+        <div className="text-red-500 text-center">
+          ❌ Error fetching sensors. Please try again later.
+        </div>
+      )}
+
+      {!isLoading &&
+        !error &&
+        Array.isArray(sensorList) &&
         sensorList.map((sensor: Sensor) => (
           <Card
             key={sensor.sensor_id}
             className="flex flex-col items-center justify-between p-4 w-64 border rounded-lg shadow-md bg-white"
           >
-            {/* Toggle active/deactivate */}
-            <div className="flex justify-end mt-1 w-full">
-              {/*<Switch
-                checked={sensor.payload.active || false}
-                onCheckedChange={() =>
-                  editSensorMutation.mutate({
-                    ...sensor,
-                    payload: {
-                      ...sensor.payload,
-                      active: !sensor.payload.active,
-                    },
-                  })
-                }
-                className="w-10 h-5"
-              />*/}
-            </div>
+            <div className="flex justify-end mt-1 w-full"></div>
 
             <MdSensors size={80} />
 
@@ -140,7 +115,6 @@ const SensorList = () => {
               {sensor.payload.name}
             </h3>
 
-            {/* Actions */}
             <div className="flex items-center gap-2 mt-3">
               <Button variant="outline" onClick={() => editSensor(sensor)}>
                 <span>Modifier</span>
@@ -161,7 +135,6 @@ const SensorList = () => {
           </Card>
         ))}
 
-      {/* Confirm Delete Dialog */}
       {selectedSensor && (
         <ConfirmDeleteDialog
           isOpen={isDialogOpen}
