@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import convert from "convert-units";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { Sensor } from "../types/sensorTypes";
 import { fakeData } from "@/lib/fakeData";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useMenu } from "@/context/MenuContext";
 
 export default function AddSensorForm() {
   const [sensor, setSensor] = useState<Sensor>({
@@ -27,10 +28,18 @@ export default function AddSensorForm() {
     },
   });
 
+  const { selectedSensorEdited, setSelectedSensorEdited } = useMenu();
+
   const [tempNames, setTempNames] = useState<Record<string, string>>({});
   const [showJson, setShowJson] = useState(false);
   const [copied, setCopied] = useState(false);
   const availableMeasures = convert().measures();
+
+  useEffect(() => {
+    if (selectedSensorEdited) {
+      setSensor(selectedSensorEdited); // Charger les données du capteur à modifier
+    }
+  }, [selectedSensorEdited]);
 
   const handleCopy = async () => {
     try {
@@ -117,27 +126,49 @@ export default function AddSensorForm() {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/sensors", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sensor),
-      });
+      if (selectedSensorEdited) {
+        // Edit Mode
+        console.log("ss: ", selectedSensorEdited.sensor_id);
+        await fetch(
+          `http://localhost:5000/api/sensors/${selectedSensorEdited.sensor_id}`,
+          {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(sensor),
+          }
+        );
+        toast.success("Sensor updated successfully!", {
+          style: {
+            backgroundColor: "#49e663", // Rouge vif
+            color: "white",
+          },
+        });
+      } else {
+        //Add Mode
+        const response = await fetch("http://localhost:5000/api/sensors", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(sensor),
+        });
 
-      if (!response.ok) {
-        throw new Error("Failed to add sensor");
+        if (!response.ok) {
+          throw new Error("Failed to add sensor");
+        }
+
+        //const data = await response.json();
+        //console.log("✅ Sensor added successfully:", data);
+        //alert("Capteur ajouté avec succès !");
+
+        toast.success("Sensor added successfully!", {
+          style: {
+            backgroundColor: "#49e663", // Rouge vif
+            color: "white",
+          },
+        });
       }
 
-      const data = await response.json();
-      //console.log("✅ Sensor added successfully:", data);
-      //alert("Capteur ajouté avec succès !");
-
-      toast.success("Sensor added successfully!", {
-        style: {
-          backgroundColor: "#49e663", // Rouge vif
-          color: "white",
-        },
-      });
       // Reset form
+      setSelectedSensorEdited(null);
       setSensor({
         payload: { name: "", owner_id: fakeData[0].payload.owner_id, data: {} },
       });
@@ -277,7 +308,9 @@ export default function AddSensorForm() {
           </Button>
 
           <Button type="button" className="w-full mt-4" onClick={handleSubmit}>
-            Ajouter le Capteur
+            {selectedSensorEdited
+              ? "Modifier le Capteur"
+              : "Ajouter le Capteur"}
           </Button>
         </form>
       </Card>
