@@ -47,7 +47,7 @@ export default function Home() {
         <div className="flex flex-1 ">
           <AppSidebar />
 
-          <main className="flex-1 p-4 overflow-y-auto mb-4">
+          <main className="flex-1 p-4 overflow-y-auto mb-40 ">
             {/* Votre contenu ici */}
             {renderContent()}
           </main>

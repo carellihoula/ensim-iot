@@ -40,7 +40,7 @@ export default function RootLayout({
         <SensorProvider userId={userId}>
           <MenuProvider>
             <QueryProvider>
-              <div className="flex flex-1 flex-col h-full">
+              <div className="flex flex-1 flex-col min-h-screen">
                 <main className="flex-1 p-4 h-full">
                   {children}
                   <Toaster
