@@ -5,7 +5,7 @@ export const fakeData: Sensor[] = [
     sensor_id: "e200544",
     payload: {
       name: "TempSensor-X100",
-      owner_id: "owner_123",
+      owner_id: "67b732a537407678e6b6d1d2",
 
       active: true,
       data: {
@@ -52,7 +52,7 @@ export const fakeData: Sensor[] = [
     sensor_id: "e772005445555",
     payload: {
       name: "Cano-X100",
-      owner_id: "owner_123",
+      owner_id: "67b732a537407678e6b6d1d2",
 
       active: true,
       data: {

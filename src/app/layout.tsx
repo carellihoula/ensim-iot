@@ -8,6 +8,8 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { MenuProvider } from "@/context/MenuContext";
 import { MQTTProvider } from "@/context/MqttContext";
 import { SensorProvider } from "@/context/SensorContext";
+import QueryProvider from "@/components/providers/QueryProvider";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +40,23 @@ export default function RootLayout({
         <SensorProvider userId={userId}>
           <MQTTProvider>
             <MenuProvider>
-              <div className="flex flex-1 flex-col h-full">
-                <main className="flex-1 p-4 h-full">{children}</main>
-              </div>
+              <QueryProvider>
+                <div className="flex flex-1 flex-col h-full">
+                  <main className="flex-1 p-4 h-full">
+                    {children}
+                    <Toaster
+                      position="bottom-right"
+                      toastOptions={{
+                        style: {
+                          color: "white",
+                          fontWeight: "bold",
+                          borderRadius: "8px",
+                        },
+                      }}
+                    />
+                  </main>
+                </div>
+              </QueryProvider>
             </MenuProvider>
           </MQTTProvider>
         </SensorProvider>

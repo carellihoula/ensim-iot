@@ -1,5 +1,7 @@
+"use client";
 import { Button } from "../ui/button";
 import { FaGoogle, FaGithub } from "react-icons/fa"; // Utilisation de React Icons pour les logos
+import { signIn } from "next-auth/react";
 
 const AuthButtons = () => {
   return (
@@ -8,6 +10,7 @@ const AuthButtons = () => {
       <Button
         variant="outline"
         className="flex items-center px-6 py-2 text-sm font-medium border-gray-300 rounded-lg"
+        onClick={() => signIn("google")}
       >
         <FaGoogle className="mr-2 text-blue-500" color="red" />
         Google
@@ -17,6 +20,7 @@ const AuthButtons = () => {
       <Button
         variant="outline"
         className="flex items-center px-6 py-2 text-sm font-medium border-gray-300 rounded-lg"
+        onClick={() => signIn("github")}
       >
         <FaGithub className="mr-2 text-gray-800" />
         GitHub

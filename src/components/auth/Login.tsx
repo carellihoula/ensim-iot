@@ -15,16 +15,43 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AuthButtons from "./AuthButtons";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 function Login() {
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // TODO: Implement registration logic
+    console.log(formData);
+
+    await signIn("credentials", {
+      email: formData.email,
+      password: formData.password,
+      redirect: true,
+      callbackUrl: "/",
+    });
+  };
+
   return (
     <Card className=" py-7 px-7">
       <CardHeader className="flex flex-row items-center justify-end">
         <CardDescription>
-          <span>Vous avez déjà un compte ?</span>
+          <span>vous n'avez pas de compte ?</span>
           <Link href={"/dd#"}>
             <strong className="text-green-600 hover:underline text-right">
-              Connectez-vous ici
+              Créez en un ici
             </strong>
           </Link>
         </CardDescription>
@@ -32,38 +59,38 @@ function Login() {
       <AuthButtons />
       <CardContent className="space-y-2">
         <div className="space-y-1">
-          <Label htmlFor="name">Username</Label>
+          <Label htmlFor="email">Email</Label>
           <Input
             className="h-11"
-            id="name"
-            placeholder="Entrez votre username"
+            id="email"
+            name="email"
+            placeholder="Entrez votre email"
+            value={formData.email}
+            onChange={handleChange}
           />
-        </div>
-        <div className="space-y-1">
-          <Label htmlFor="name">Email</Label>
-          <Input className="h-11" id="name" placeholder="Entrez votre email" />
         </div>
         <div className="space-y-1">
           <Label htmlFor="password">Password</Label>
           <Input
             className="h-11"
             id="password"
+            name="password"
             type="password"
             placeholder="Entrez votre mot de passe"
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
-        <div className="space-y-1">
-          <Label htmlFor="password">Confirme Password</Label>
-          <Input
-            className="h-11"
-            id="password"
-            type="password"
-            placeholder="Confirmez votre mot de passe"
-          />
-        </div>
+        <Link href={"/dd#"}>
+          <p className="text-green-600 hover:underline text-right">
+            vous avez oublié votre mot de passe ?
+          </p>
+        </Link>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button className="w-full h-11">S'inscrire</Button>
+        <Button className="w-full h-11" onClick={handleSubmit}>
+          Se Connecter
+        </Button>
       </CardFooter>
     </Card>
   );

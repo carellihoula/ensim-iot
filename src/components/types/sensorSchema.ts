@@ -1,11 +1,11 @@
 import { z } from "zod";
 
 // Schéma pour une mesure individuelle (valeur + unité + date)
-const MeasurementSchema = z.object({
+export const MeasurementSchema = z.object({
   value: z.union([z.number(), z.string()]),
   measure: z.string(),
   unit: z.string().optional(),
-  date: z.string().datetime(),
+  date: z.string().datetime().optional(),
 });
 
 // Schéma pour les données des capteurs (avec mesures dynamiques)

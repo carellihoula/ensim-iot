@@ -22,6 +22,7 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { TbLockPassword } from "react-icons/tb";
 import { CiLock } from "react-icons/ci";
+import { signOut } from "next-auth/react";
 
 type DialogType = "edit-profile" | "change-password" | null;
 
@@ -79,7 +80,7 @@ export function DropdownMenuComponent() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth" })}>
           <LogOut className="mr-2" />
           <span>Logout</span>
         </DropdownMenuItem>

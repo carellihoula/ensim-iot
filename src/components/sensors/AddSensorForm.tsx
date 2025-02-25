@@ -16,6 +16,7 @@ import {
 import { Sensor } from "../types/sensorTypes";
 import { fakeData } from "@/lib/fakeData";
 import { Copy } from "lucide-react";
+import { toast } from "sonner";
 
 export default function AddSensorForm() {
   const [sensor, setSensor] = useState<Sensor>({
@@ -49,9 +50,7 @@ export default function AddSensorForm() {
         ...prev.payload,
         data: {
           ...prev.payload.data,
-          [newId]: [
-            { value: 0, measure: "", unit: "", date: new Date().toISOString() },
-          ],
+          [newId]: [{ value: 0, measure: "", unit: "" }],
         },
       },
     }));
@@ -116,16 +115,41 @@ export default function AddSensorForm() {
     });
   };
 
-  const handleSubmit = () => {
-    setSensor({
-      payload: {
-        name: "",
-        owner_id: fakeData[0].payload.owner_id,
-        data: {},
-      },
-    });
-    console.log("Dispositif ajouté :", sensor);
-    //alert("Dispositif ajouté avec succès !");
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/sensors", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sensor),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add sensor");
+      }
+
+      const data = await response.json();
+      //console.log("✅ Sensor added successfully:", data);
+      //alert("Capteur ajouté avec succès !");
+
+      toast.success("Sensor added successfully!", {
+        style: {
+          backgroundColor: "#49e663", // Rouge vif
+          color: "white",
+        },
+      });
+      // Reset form
+      setSensor({
+        payload: { name: "", owner_id: fakeData[0].payload.owner_id, data: {} },
+      });
+    } catch (error) {
+      //console.error("❌ Error adding sensor:", error);
+      toast.error("Failed to add sensor. Please try again.", {
+        style: {
+          backgroundColor: "#f01c2d", // Rouge vif
+          color: "white",
+        },
+      });
+    }
   };
 
   return (

@@ -16,17 +16,33 @@ const SensorList = () => {
   const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
 
   //Delete sensors with dialog
-  const handleDelete = (id: number | string) => {
+  const handleDelete = async (id: number | string) => {
     if (selectedSensor?.sensor_id !== null) {
-      /*setSensorList((prev) =>
-        prev.filter((_, index) => index !== selectedSensorId)
-      );*/
+      try {
+        // Call API to delete the sensor
+        const response = await fetch(
+          `http://localhost:5000/api/sensors/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      setSensorList((prev) => prev.filter((sensor) => sensor.sensor_id !== id));
-      setIsDialogOpen(false);
+        if (!response.ok) {
+          throw new Error("Failed to delete sensor");
+        }
+
+        setSensorList((prev) =>
+          prev.filter((sensor) => sensor.sensor_id !== id)
+        );
+        setIsDialogOpen(false);
+        console.log("✅ Sensor deleted successfully");
+      } catch (error: any) {
+        console.error("❌ Error deleting sensor:", error.message);
+      }
     }
-    //setIsDialogOpen(false);
-    //setSensorList((prev) => prev.filter((_, index) => index !== id));
   };
 
   //edit sensor
