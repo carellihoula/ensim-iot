@@ -6,7 +6,7 @@ import Header from "@/components/layout/Header";
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { MenuProvider } from "@/context/MenuContext";
-import { MQTTProvider } from "@/context/MqttContext";
+
 import { SensorProvider } from "@/context/SensorContext";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { Toaster } from "sonner";
@@ -38,27 +38,25 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
       >
         <SensorProvider userId={userId}>
-          <MQTTProvider>
-            <MenuProvider>
-              <QueryProvider>
-                <div className="flex flex-1 flex-col h-full">
-                  <main className="flex-1 p-4 h-full">
-                    {children}
-                    <Toaster
-                      position="bottom-right"
-                      toastOptions={{
-                        style: {
-                          color: "white",
-                          fontWeight: "bold",
-                          borderRadius: "8px",
-                        },
-                      }}
-                    />
-                  </main>
-                </div>
-              </QueryProvider>
-            </MenuProvider>
-          </MQTTProvider>
+          <MenuProvider>
+            <QueryProvider>
+              <div className="flex flex-1 flex-col h-full">
+                <main className="flex-1 p-4 h-full">
+                  {children}
+                  <Toaster
+                    position="bottom-right"
+                    toastOptions={{
+                      style: {
+                        color: "white",
+                        fontWeight: "bold",
+                        borderRadius: "8px",
+                      },
+                    }}
+                  />
+                </main>
+              </div>
+            </QueryProvider>
+          </MenuProvider>
         </SensorProvider>
       </body>
     </html>

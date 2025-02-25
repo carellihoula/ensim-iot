@@ -12,6 +12,7 @@ import { io, Socket } from "socket.io-client";
 
 interface SensorContextType {
   dataFromSensors: Sensor[];
+  latestSensorData: Record<string, Record<string, number>>; // Latest values per sensor & measurement type
   loading: boolean;
 }
 
@@ -33,6 +34,9 @@ interface SensorProviderProps {
 export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
   const [dataFromSensors, setDataFromSensors] = useState<Sensor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [latestSensorData, setLatestSensorData] = useState<
+    Record<string, Record<string, number>>
+  >({});
 
   useEffect(() => {
     if (!userId) return;
@@ -47,6 +51,25 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
 
     socket.on("sensorData", (data: Sensor[]) => {
       setDataFromSensors(data);
+      const latestDataUpdate: Record<string, Record<string, number>> = {};
+
+      data.forEach((sensor) => {
+        if (!latestDataUpdate[sensor.sensor_id!]) {
+          latestDataUpdate[sensor.sensor_id!] = {};
+        }
+        Object.entries(sensor.payload.data).forEach(([key, values]) => {
+          if (Array.isArray(values) && values.length > 0) {
+            latestDataUpdate[sensor.sensor_id!][key] =
+              values[values.length - 1].value; // Last value of each measurement type
+          }
+        });
+      });
+
+      setLatestSensorData((prevLatest) => ({
+        ...prevLatest,
+        ...latestDataUpdate,
+      }));
+
       setLoading(false);
     });
 
@@ -58,7 +81,9 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
   }, [userId]);
 
   return (
-    <SensorContext.Provider value={{ dataFromSensors, loading }}>
+    <SensorContext.Provider
+      value={{ dataFromSensors, latestSensorData, loading }}
+    >
       {children}
     </SensorContext.Provider>
   );

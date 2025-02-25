@@ -10,6 +10,7 @@ import Visualization from "@/components/sensors/Visualization";
 import { Separator } from "@/components/ui/separator";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { useMenu } from "@/context/MenuContext";
+
 import { useSensors } from "@/context/SensorContext";
 import { fakeData } from "@/lib/fakeData";
 import { menuItems } from "@/lib/navigation";
