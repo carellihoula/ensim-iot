@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { FormEvent, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,29 +13,53 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import AuthButtons from "./AuthButtons";
 import Link from "next/link";
-
-type UserLoginType = {
-  email: string;
-  password: string;
-  username: string;
-};
+import { User } from "../types/UserTypes";
+import { registerUser } from "@/services/auth";
+import { toast } from "sonner";
 
 function Register() {
-  const [userLoginData, setUserLoginData] = useState<UserLoginType>({
+  const [formData, setFormData] = useState<User>({
     email: "",
     password: "",
     username: "",
+    phone: "",
   });
+  const [confirmP, setConfirmP] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
-    setUserLoginData((prev) => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const [confirmP, setConfirmP] = useState("");
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      await registerUser(formData);
+      toast.success("Registration successful!", {
+        style: {
+          background: "green",
+        },
+      });
+      setFormData({
+        email: "",
+        password: "",
+        username: "",
+        phone: "",
+      });
+      setConfirmP;
+      ("");
+    } catch (error: any) {
+      toast.error(error.message, {
+        style: {
+          background: "red",
+        },
+      });
+    }
+  };
+
   return (
     <Card className=" py-7 px-7">
       <CardHeader className="flex flex-row items-center justify-end">
@@ -54,22 +78,39 @@ function Register() {
           <Label htmlFor="username">Nom d'utilisateur</Label>
           <Input
             className="h-11"
+            type="text"
             id="username"
             name="username"
-            value={userLoginData.username}
+            value={formData.username}
             onChange={handleChange}
             placeholder="Entrez votre nom d'utilisateur"
+            required
+          />
+        </div>
+        <div className="space-y-1">
+          <Label htmlFor="phone">Téléphone</Label>
+          <Input
+            className="h-11"
+            type="text"
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Entrez votre téléphone"
+            required
           />
         </div>
         <div className="space-y-1">
           <Label htmlFor="email">Email</Label>
           <Input
             className="h-11"
+            type="email"
             id="email"
             name="email"
-            value={userLoginData.email}
+            value={formData.email}
             onChange={handleChange}
             placeholder="Entrez votre email"
+            required
           />
         </div>
         <div className="space-y-1">
@@ -78,10 +119,11 @@ function Register() {
             className="h-11"
             id="password"
             name="password"
-            value={userLoginData.password}
+            value={formData.password}
             onChange={handleChange}
             type="password"
             placeholder="Entrez votre mot de passe"
+            required
           />
         </div>
         <div className="space-y-1">
@@ -94,11 +136,18 @@ function Register() {
             onChange={(e) => setConfirmP(e.target.value)}
             type="password"
             placeholder="Confirmez votre mot de passe"
+            required
           />
         </div>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <Button className="w-full h-11">S'inscrire</Button>
+        <Button
+          className="w-full h-11 "
+          onClick={handleSubmit}
+          disabled={!(confirmP === formData.password)}
+        >
+          S'inscrire
+        </Button>
       </CardFooter>
     </Card>
   );

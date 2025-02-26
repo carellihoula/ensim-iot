@@ -13,8 +13,11 @@ export default function Header() {
 
       {/* Actions */}
       <div className="flex items-center space-x-4">
-        <div className="relative">
-          <Search className="absolute left-2 top-2.5 text-gray-500" size={18} />
+        <div className="relative hidden md:block">
+          <Search
+            className="absolute left-2 top-2.5 text-gray-500 "
+            size={18}
+          />
           <Input
             type="text"
             placeholder="Rechercher..."
@@ -25,10 +28,7 @@ export default function Header() {
           <BookOpen className="mr-2" size={18} />
           Documentation
         </Button>
-        <Button variant="outline" className="hidden md:flex">
-          <HelpCircle className="mr-2" size={18} />
-          Help
-        </Button>
+
         <DropdownMenuComponent />
       </div>
     </header>

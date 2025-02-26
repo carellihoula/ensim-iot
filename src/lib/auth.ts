@@ -20,8 +20,8 @@ export const authOptions = {
       },
       async authorize(credentials) {
         // Call your Express.js API for authentication
-        console.log("🔍 Received credentials:", credentials);
-        const res = await fetch(`${process.env.AUTH_API_URL}/login`, {
+
+        const res = await fetch(`${process.env.AUTH_API_URL}/auth/login`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -38,6 +38,8 @@ export const authOptions = {
         return {
           id: data.user.id,
           email: data.user.email,
+          username: data.user.phone,
+          phone: data.user.phone,
         }; // Return user data to store in the session
       },
     }),
@@ -47,18 +49,28 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.email = user.email;
+        token.username = user.username;
+        token.phone = user.phone;
       }
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
       session.user.id = token.id;
       session.user.email = token.email;
+      session.user.username = token.username;
+      session.user.phone = token.phone;
       return session;
+    },
+  },
+  events: {
+    async signOut() {
+      // Optionnel : rafraîchir les sessions côté serveur après la déconnexion
+      await fetch(`${process.env.AUTH_API_URL}/logout`, { method: "POST" });
     },
   },
   pages: {
     signIn: "/auth",
-    error: "/auth/error", // Redirect to your custom auth page
+    //error: "/auth/error", // Redirect to your custom auth page
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

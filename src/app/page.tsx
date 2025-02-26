@@ -14,10 +14,30 @@ import { useMenu } from "@/context/MenuContext";
 import { useSensors } from "@/context/SensorContext";
 import { fakeData } from "@/lib/fakeData";
 import { menuItems } from "@/lib/navigation";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { toast } from "sonner";
 
 export default function Home() {
   const { activeMenu } = useMenu();
   const { dataFromSensors } = useSensors();
+
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  //protect private routes
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      toast.error("You don't have permission to access this page.", {
+        style: {
+          background: "red",
+        },
+      });
+      router.push("/auth"); // Redirection si non connecté
+    }
+  }, [status, router]);
+
+  if (status === "loading") return <p>Loading...</p>;
 
   // Mapping des menus aux composants
   const renderContent = () => {

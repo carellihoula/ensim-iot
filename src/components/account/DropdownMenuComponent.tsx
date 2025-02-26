@@ -1,8 +1,6 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, User, Lock, Mail } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -22,7 +20,7 @@ import { MdEmail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { TbLockPassword } from "react-icons/tb";
 import { CiLock } from "react-icons/ci";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 type DialogType = "edit-profile" | "change-password" | null;
 
@@ -36,6 +34,7 @@ export function DropdownMenuComponent() {
     newPassword: "",
     confirmPassword: "",
   });
+  const { data: session } = useSession();
   const openDialog = (type: DialogType) => {
     setDialogType(type);
     setIsDialogOpen(true);
@@ -52,20 +51,38 @@ export function DropdownMenuComponent() {
     }
     setIsDialogOpen(false);
   };
+
+  const handleLogout = async () => {
+    try {
+      await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+      await signOut({ callbackUrl: "/auth" });
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-10 h-10 p-0 border-none">
-          {/* Avatar */}
-          <Avatar className="w-10 h-10">
-            <AvatarImage
-              src="https://i.pravatar.cc/150?img=3"
-              alt="User Avatar"
-            />
-            <AvatarFallback>U</AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
+      <div className="flex items-center gap-1 font-bold ">
+        <span className="truncate w-38 uppercase hover:underline text-sm">
+          {session?.user?.name}
+        </span>
+        <DropdownMenuTrigger asChild>
+          <Button variant="outline" className="w-10 h-10 p-0 border-none">
+            {/* Avatar */}
+            <Avatar className="w-10 h-10">
+              <AvatarImage
+                src="https://i.pravatar.cc/150?img=3"
+                alt="User Avatar"
+              />
+              <AvatarFallback>U</AvatarFallback>
+            </Avatar>
+          </Button>
+        </DropdownMenuTrigger>
+      </div>
+
       <DropdownMenuContent className="w-56 mr-4">
         <DropdownMenuLabel>Mon compte</DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -80,7 +97,7 @@ export function DropdownMenuComponent() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/auth" })}>
+        <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2" />
           <span>Logout</span>
         </DropdownMenuItem>

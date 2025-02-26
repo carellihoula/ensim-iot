@@ -1,7 +1,7 @@
 export const fetchUserSensors = async (userId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/sensors/user/${userId}`
+      `${process.env.AUTH_API_URL}/sensors/user/${userId}`
     );
     // Vérifie si la réponse est du JSON
     const text = await response.text();

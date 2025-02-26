@@ -2,14 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import React from "react";
-import Header from "@/components/layout/Header";
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { SidebarProvider } from "@/components/ui/sidebar";
 import { MenuProvider } from "@/context/MenuContext";
 
 import { SensorProvider } from "@/context/SensorContext";
 import QueryProvider from "@/components/providers/QueryProvider";
 import { Toaster } from "sonner";
+import AuthProvider from "@/components/SessionProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,21 +38,23 @@ export default function RootLayout({
         <SensorProvider userId={userId}>
           <MenuProvider>
             <QueryProvider>
-              <div className="flex flex-1 flex-col min-h-screen">
-                <main className="flex-1 p-4 h-full">
-                  {children}
-                  <Toaster
-                    position="bottom-right"
-                    toastOptions={{
-                      style: {
-                        color: "white",
-                        fontWeight: "bold",
-                        borderRadius: "8px",
-                      },
-                    }}
-                  />
-                </main>
-              </div>
+              <AuthProvider>
+                <div className="flex flex-1 flex-col min-h-screen">
+                  <main className="flex-1 p-4 h-full">
+                    {children}
+                    <Toaster
+                      position="top-center"
+                      toastOptions={{
+                        style: {
+                          color: "white",
+                          fontWeight: "bold",
+                          borderRadius: "8px",
+                        },
+                      }}
+                    />
+                  </main>
+                </div>
+              </AuthProvider>
             </QueryProvider>
           </MenuProvider>
         </SensorProvider>
