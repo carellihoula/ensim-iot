@@ -14,6 +14,8 @@ interface SensorContextType {
   dataFromSensors: Sensor[];
   latestSensorData: Record<string, Record<string, number>>; // Latest values per sensor & measurement type
   loading: boolean;
+  disabledMeasurements: Record<string, Set<string>>;
+  toggleMeasurement: (sensorId: string, measurement: string) => void;
 }
 
 const SensorContext = createContext<SensorContextType | undefined>(undefined);
@@ -37,6 +39,23 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
   const [latestSensorData, setLatestSensorData] = useState<
     Record<string, Record<string, number>>
   >({});
+
+  const [disabledMeasurements, setDisabledMeasurements] = useState<
+    Record<string, Set<string>>
+  >({});
+
+  // Toggle function to enable/disable measurements
+  const toggleMeasurement = (sensorId: string, measurement: string) => {
+    setDisabledMeasurements((prev) => {
+      const updated = new Set(prev[sensorId] || []);
+      if (updated.has(measurement)) {
+        updated.delete(measurement);
+      } else {
+        updated.add(measurement);
+      }
+      return { ...prev, [sensorId]: updated };
+    });
+  };
 
   useEffect(() => {
     if (!userId) return;
@@ -82,7 +101,13 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
 
   return (
     <SensorContext.Provider
-      value={{ dataFromSensors, latestSensorData, loading }}
+      value={{
+        dataFromSensors,
+        latestSensorData,
+        loading,
+        disabledMeasurements,
+        toggleMeasurement,
+      }}
     >
       {children}
     </SensorContext.Provider>

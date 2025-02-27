@@ -12,7 +12,8 @@ import { formatToExponential } from "@/lib/utils/formatToExponential";
 import { Loader2 } from "lucide-react";
 
 export default function SensorsHandler() {
-  const { latestSensorData, dataFromSensors } = useSensors();
+  const { latestSensorData, dataFromSensors, disabledMeasurements } =
+    useSensors();
 
   return (
     <div className="flex flex-col items-center gap-6 p-6">
@@ -38,7 +39,10 @@ export default function SensorsHandler() {
                     {sensor.payload.name || `Sensor ${index + 1}`}
                   </AccordionTrigger>
                   <AccordionContent className="px-4 pb-4">
-                    <SensorCard payload={sensor.payload} />
+                    <SensorCard
+                      sensor={sensor}
+                      sensorId={sensor.sensor_id || ""}
+                    />
                   </AccordionContent>
                 </AccordionItem>
               ))}
@@ -60,8 +64,13 @@ export default function SensorsHandler() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {Object.entries(latestSensorData).map(
-              ([sensorId, measurements]) => {
+            {Object.entries(latestSensorData)
+              .filter(([sensorId, measurements]) =>
+                Object.keys(measurements).some(
+                  (measure) => !disabledMeasurements[sensorId]?.has(measure)
+                )
+              )
+              .map(([sensorId, measurements]) => {
                 const sensor = dataFromSensors.find(
                   (s) => s.sensor_id === sensorId
                 );
@@ -77,8 +86,12 @@ export default function SensorsHandler() {
                     </CardHeader>
                     <CardContent>
                       <ul className="space-y-2">
-                        {Object.entries(measurements).map(
-                          ([measure, value]) => (
+                        {Object.entries(measurements)
+                          .filter(
+                            ([measure]) =>
+                              !disabledMeasurements[sensorId]?.has(measure)
+                          )
+                          .map(([measure, value]) => (
                             <li
                               key={measure}
                               className="flex justify-between items-center"
@@ -88,14 +101,12 @@ export default function SensorsHandler() {
                                 {formatToExponential(value)}
                               </Badge>
                             </li>
-                          )
-                        )}
+                          ))}
                       </ul>
                     </CardContent>
                   </Card>
                 );
-              }
-            )}
+              })}
           </div>
         )}
       </div>

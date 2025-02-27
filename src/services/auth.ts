@@ -30,7 +30,7 @@ export const registerUser = async (formData: User) => {
 
 export const fetchUserData = async (userId: string) => {
   try {
-    const res = await fetch(
+    const response = await fetch(
       `${process.env.NEXT_PUBLIC_AUTH_API_URL}/users/${userId}`,
       {
         method: "GET",
@@ -41,11 +41,11 @@ export const fetchUserData = async (userId: string) => {
       }
     );
 
-    if (!res.ok) {
+    if (!response.ok) {
       throw new Error("Failed to fetch user data");
     }
 
-    return await res.json();
+    return response.json();
   } catch (error) {
     console.error("Error fetching user data:", error);
     return null;
