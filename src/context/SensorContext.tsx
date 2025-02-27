@@ -44,6 +44,35 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
     Record<string, Set<string>>
   >({});
 
+  // Load disabled measurements from localStorage
+  useEffect(() => {
+    const storedDisabledMeasurements = localStorage.getItem(
+      "disabledMeasurements"
+    );
+    if (storedDisabledMeasurements) {
+      try {
+        const parsed = JSON.parse(storedDisabledMeasurements);
+
+        if (typeof parsed === "object" && parsed !== null) {
+          const converted = Object.fromEntries(
+            Object.entries(parsed).map(([key, value]) => [
+              key,
+              new Set(Array.isArray(value) ? value : []), // Ensure value is an array before using new Set()
+            ])
+          );
+
+          setDisabledMeasurements(converted);
+        }
+      } catch (error) {
+        console.error(
+          "Failed to parse disabledMeasurements from localStorage:",
+          error
+        );
+        setDisabledMeasurements({});
+      }
+    }
+  }, []);
+
   // Toggle function to enable/disable measurements
   const toggleMeasurement = (sensorId: string, measurement: string) => {
     setDisabledMeasurements((prev) => {
@@ -53,7 +82,17 @@ export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
       } else {
         updated.add(measurement);
       }
-      return { ...prev, [sensorId]: updated };
+      const newState = { ...prev, [sensorId]: updated };
+      // Convert Sets to arrays before saving in localStorage
+      const serializableState = Object.fromEntries(
+        Object.entries(newState).map(([key, value]) => [key, Array.from(value)])
+      );
+
+      localStorage.setItem(
+        "disabledMeasurements",
+        JSON.stringify(serializableState)
+      );
+      return newState;
     });
   };
 
