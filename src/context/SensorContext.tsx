@@ -1,6 +1,7 @@
 "use client";
 
 import { Sensor } from "@/components/types/sensorTypes";
+import { useSession } from "next-auth/react";
 import {
   createContext,
   useState,
@@ -30,15 +31,16 @@ export const useSensors = (): SensorContextType => {
 
 interface SensorProviderProps {
   children: ReactNode;
-  userId: string;
 }
 
-export const SensorProvider = ({ children, userId }: SensorProviderProps) => {
+export const SensorProvider = ({ children }: SensorProviderProps) => {
   const [dataFromSensors, setDataFromSensors] = useState<Sensor[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [latestSensorData, setLatestSensorData] = useState<
     Record<string, Record<string, number>>
   >({});
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
 
   const [disabledMeasurements, setDisabledMeasurements] = useState<
     Record<string, Set<string>>

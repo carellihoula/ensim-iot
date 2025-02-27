@@ -18,12 +18,15 @@ import { fakeData } from "@/lib/fakeData";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useMenu } from "@/context/MenuContext";
+import { useSession } from "next-auth/react";
 
 export default function AddSensorForm() {
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
   const [sensor, setSensor] = useState<Sensor>({
     payload: {
       name: "",
-      owner_id: fakeData[0].payload.owner_id,
+      owner_id: userId || "",
       data: {},
     },
   });

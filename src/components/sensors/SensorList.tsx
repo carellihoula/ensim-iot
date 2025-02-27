@@ -12,6 +12,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useMenu } from "@/context/MenuContext";
 import { menuItems } from "@/lib/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSession } from "next-auth/react";
 
 const API_URL = "http://localhost:5000/api/sensors"; // API backend
 
@@ -21,6 +22,9 @@ const SensorList = () => {
   const [selectedSensor, setSelectedSensor] = useState<Sensor | null>(null);
   const { setActiveMenu, setSelectedSensorEdited } = useMenu();
 
+  const { data: session } = useSession();
+  const userId = session?.user?.id;
+  console.log("userId: " + userId);
   const {
     data: sensorList = [],
     isLoading,
@@ -28,13 +32,18 @@ const SensorList = () => {
   } = useQuery({
     queryKey: ["sensors"],
     queryFn: async () => {
-      const response = await fetch(`${API_URL}/user/67b732a537407678e6b6d1d2`);
+      const response = await fetch(`${API_URL}/user/${userId}`);
       if (!response.ok) throw new Error("Failed to fetch sensors");
 
       const result = await response.json();
+
+      if (result.message) {
+        return { sensors: [], message: result.message };
+      }
+
       if (!Array.isArray(result)) {
         console.error("API did not return an array:", result);
-        return [];
+        return { sensors: [] };
       }
 
       return result;
@@ -71,6 +80,8 @@ const SensorList = () => {
     setActiveMenu(menuItems[2].title);
   };
 
+  console.log("sebsors" + JSON.stringify(sensorList));
+
   return (
     <div className="flex flex-wrap justify-center gap-6 p-6">
       {isLoading &&
@@ -96,6 +107,11 @@ const SensorList = () => {
       {error && (
         <div className="text-red-500 text-center">
           ❌ Error fetching sensors. Please try again later.
+        </div>
+      )}
+      {"sensors" in sensorList && sensorList.sensors.length === 0 && (
+        <div className="text-red-500 text-center">
+          {sensorList.message || "Aucun capteur disponible."}
         </div>
       )}
 

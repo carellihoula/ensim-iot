@@ -29,16 +29,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const userId = "67b732a537407678e6b6d1d2";
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-screen`}
       >
-        <SensorProvider userId={userId}>
-          <MenuProvider>
-            <QueryProvider>
-              <AuthProvider>
+        <AuthProvider>
+          <SensorProvider>
+            <MenuProvider>
+              <QueryProvider>
                 <div className="flex flex-1 flex-col min-h-screen">
                   <main className="flex-1 p-4 h-full">
                     {children}
@@ -54,10 +53,10 @@ export default function RootLayout({
                     />
                   </main>
                 </div>
-              </AuthProvider>
-            </QueryProvider>
-          </MenuProvider>
-        </SensorProvider>
+              </QueryProvider>
+            </MenuProvider>
+          </SensorProvider>
+        </AuthProvider>
       </body>
     </html>
   );
