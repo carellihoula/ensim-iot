@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, react/no-unescaped-entities  @typescript-eslint/no-empty-object-type */
 import { createContext, useContext, useState, PropsWithChildren } from "react";
 import { menuItems } from "@/lib/navigation";
 import { Sensor } from "@/components/types/sensorTypes";

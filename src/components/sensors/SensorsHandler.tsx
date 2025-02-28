@@ -10,8 +10,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatToExponential } from "@/lib/utils/formatToExponential";
-import { Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
 
 export default function SensorsHandler() {
   const { latestSensorData, dataFromSensors, disabledMeasurements } =

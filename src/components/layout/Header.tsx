@@ -1,10 +1,7 @@
-import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, BookOpen, UserCircle, HelpCircle } from "lucide-react";
-import Image from "next/image";
+import { Search, BookOpen } from "lucide-react";
 import { DropdownMenuComponent } from "../account/DropdownMenuComponent";
-import { Separator } from "../ui/separator";
 
 export default function Header() {
   return (

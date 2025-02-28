@@ -1,18 +1,15 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AuthButtons from "./AuthButtons";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
@@ -46,16 +43,7 @@ function Login() {
 
   return (
     <Card className=" py-7 px-7">
-      <CardHeader className="flex flex-row items-center justify-end">
-        <CardDescription>
-          <span>vous n'avez pas de compte ?</span>
-          <Link href={"/dd#"}>
-            <strong className="text-green-600 hover:underline text-right">
-              Créez en un ici
-            </strong>
-          </Link>
-        </CardDescription>
-      </CardHeader>
+      <CardHeader className="flex flex-row items-center justify-end"></CardHeader>
       <AuthButtons />
       <CardContent className="space-y-2">
         <div className="space-y-1">

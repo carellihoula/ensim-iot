@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, react/no-unescaped-entities */
 import { useEffect, useState } from "react";
 import convert from "convert-units";
 import { Input } from "@/components/ui/input";

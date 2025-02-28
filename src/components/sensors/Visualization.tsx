@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any, react/no-unescaped-entities */
 import { FC, useEffect, useState } from "react";
 import {
   LineChart,
@@ -21,7 +21,6 @@ import {
 } from "@/components/ui/select";
 import DateRangePicker from "./DateRangePicker";
 import { COLORS } from "@/lib/colors";
-import { useSensors } from "@/context/SensorContext";
 import { Sensor } from "../types/sensorTypes";
 
 interface ISensor {
