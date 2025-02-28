@@ -1,3 +1,4 @@
+"user client";
 import { useSensors } from "@/context/SensorContext";
 import SensorCard from "./SensorCard";
 import {
@@ -10,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { formatToExponential } from "@/lib/utils/formatToExponential";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function SensorsHandler() {
   const { latestSensorData, dataFromSensors, disabledMeasurements } =
@@ -24,7 +26,8 @@ export default function SensorsHandler() {
         {/* Show loader if no data */}
         {dataFromSensors.length === 0 ? (
           <div className="flex items-center justify-center h-40">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            {/*<Loader2 className="w-6 h-6 animate-spin text-primary" />*/}
+            Pas de capteurs
           </div>
         ) : (
           <Accordion type="single" collapsible className="w-full">
@@ -60,7 +63,8 @@ export default function SensorsHandler() {
         {/* Show loader if no data */}
         {dataFromSensors.length === 0 ? (
           <div className="flex items-center justify-center h-40">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
+            {/*<Loader2 className="w-6 h-6 animate-spin text-primary" />*/}
+            Pas de capteurs
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

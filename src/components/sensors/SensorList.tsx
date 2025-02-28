@@ -14,7 +14,7 @@ import { menuItems } from "@/lib/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "next-auth/react";
 
-const API_URL = "http://localhost:5000/api/sensors"; // API backend
+const API_URL = `${process.env.NEXT_PUBLIC_AUTH_API_URL}/sensors`; // API backend
 
 const SensorList = () => {
   const queryClient = useQueryClient();

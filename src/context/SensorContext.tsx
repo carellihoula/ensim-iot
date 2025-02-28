@@ -101,7 +101,7 @@ export const SensorProvider = ({ children }: SensorProviderProps) => {
   useEffect(() => {
     if (!userId) return;
 
-    const socket: Socket = io("http://localhost:5000", {
+    const socket: Socket = io("https://ensim-iot-backend-v2.onrender.com", {
       withCredentials: true,
       transports: ["websocket", "polling"],
     });

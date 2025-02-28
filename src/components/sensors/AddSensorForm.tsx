@@ -133,7 +133,7 @@ export default function AddSensorForm() {
         // Edit Mode
         console.log("ss: ", selectedSensorEdited.sensor_id);
         await fetch(
-          `http://localhost:5000/api/sensors/${selectedSensorEdited.sensor_id}`,
+          `${process.env.NEXT_PUBLIC_AUTH_API_URL}/sensors/${selectedSensorEdited.sensor_id}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -148,11 +148,14 @@ export default function AddSensorForm() {
         });
       } else {
         //Add Mode
-        const response = await fetch("http://localhost:5000/api/sensors", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(sensor),
-        });
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_AUTH_API_URL}/sensors`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(sensor),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to add sensor");
