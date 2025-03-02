@@ -22,14 +22,17 @@ export const authOptions = {
       async authorize(credentials) {
         // Call your Express.js API for authentication
 
-        const res = await fetch(`${process.env.AUTH_API_URL}/auth/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: credentials?.email,
-            password: credentials?.password,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_AUTH_API_URL}/auth/login`,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+            }),
+          }
+        );
 
         const data = await res.json();
         if (!res.ok || !data.user) {

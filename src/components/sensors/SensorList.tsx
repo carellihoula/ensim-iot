@@ -80,8 +80,6 @@ const SensorList = () => {
     setActiveMenu(menuItems[2].title);
   };
 
-  console.log("sebsors" + JSON.stringify(sensorList));
-
   return (
     <div className="flex flex-wrap justify-center gap-6 p-6">
       {isLoading &&
