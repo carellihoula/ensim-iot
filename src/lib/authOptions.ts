@@ -71,7 +71,9 @@ export const authOptions = {
   events: {
     async signOut() {
       // Optionnel : rafraîchir les sessions côté serveur après la déconnexion
-      await fetch(`${process.env.AUTH_API_URL}/logout`, { method: "POST" });
+      await fetch(`${process.env.NEXT_PUBLIC_AUTH_API_URL}/logout`, {
+        method: "POST",
+      });
     },
   },
   pages: {
