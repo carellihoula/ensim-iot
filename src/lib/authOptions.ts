@@ -56,7 +56,7 @@ export const authOptions = {
         token.username = user.username;
         token.phone = user.phone;
       }
-      console.log("JWT Token:", token); //
+      //console.log("JWT Token:", token); //
       return token;
     },
     async session({ session, token }: { session: any; token: any }) {
@@ -64,7 +64,7 @@ export const authOptions = {
       session.user.email = token.email;
       session.user.username = token.username;
       session.user.phone = token.phone;
-      console.log("Session Object:", session);
+      // console.log("Session Object:", session);
       return session;
     },
   },
