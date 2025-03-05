@@ -24,8 +24,9 @@ export const registerUser = async (formData: User) => {
     const errorData = await response.json();
     throw new Error(errorData.message || "Registration failed");
   }
+  const data = await response.json()
 
-  return response.json();
+  return data;
 };
 
 export const fetchUserData = async (userId: string) => {
