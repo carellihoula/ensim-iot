@@ -49,8 +49,7 @@ function Register() {
         username: "",
         phone: "",
       });
-      setConfirmP;
-      ("");
+      setConfirmP("");
     } catch (error: any) {
       toast.error(error.message, {
         style: {

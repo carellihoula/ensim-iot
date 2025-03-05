@@ -37,7 +37,7 @@ function Login() {
       email: formData.email,
       password: formData.password,
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "https://ensim-iot.onrender.com/",
     });
   };
 

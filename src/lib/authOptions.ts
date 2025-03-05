@@ -77,7 +77,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/auth",
+    signIn: "https://ensim-iot.onrender.com/auth",
     //error: "/auth/error", // Redirect to your custom auth page
   },
   secret: process.env.NEXTAUTH_SECRET,
