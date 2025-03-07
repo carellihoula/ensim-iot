@@ -98,7 +98,7 @@ export default function SensorsHandler() {
                               key={measure}
                               className="flex justify-between items-center"
                             >
-                              <span className="font-medium">{measure}:</span>
+                              <span className="font-medium font-raleway">{measure}:</span>
                               <Badge variant="outline">
                                 {formatToExponential(value)}
                               </Badge>
