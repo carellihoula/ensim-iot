@@ -23,7 +23,7 @@ export default function SensorCard({ sensor, sensorId }: SensorCardProps) {
             >
               <BellRing />
               <div className="flex-1 space-y-1 w-full">
-                <p className="text-lg font-medium leading-none">{measure}</p>
+                <p className="text-lg font-raleway  font-medium leading-none">{measure}</p>
               </div>
               <Switch
                 checked={!isDisabled}

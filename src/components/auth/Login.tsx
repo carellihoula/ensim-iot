@@ -30,8 +30,6 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement registration logic
-    console.log(formData);
 
     await signIn("credentials", {
       email: formData.email,
