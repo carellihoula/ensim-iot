@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -13,12 +13,14 @@ import { Label } from "@/components/ui/label";
 import AuthButtons from "./AuthButtons";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { Loader2 } from "lucide-react";
 
 function Login() {
   const [formData, setFormData] = React.useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading]=useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,6 +32,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
 
     await signIn("credentials", {
       email: formData.email,
@@ -37,6 +40,7 @@ function Login() {
       redirect: true,
       callbackUrl: "https://ensim-iot.onrender.com/",
     });
+    setIsLoading(false)
   };
 
   return (
@@ -76,7 +80,7 @@ function Login() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button className="w-full h-11" onClick={handleSubmit}>
-          Se Connecter
+          {isLoading ? (<Loader2/>):"Se Connecter"}
         </Button>
       </CardFooter>
     </Card>
