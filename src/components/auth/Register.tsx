@@ -25,7 +25,7 @@ function Register() {
     phone: "",
   });
   const [confirmP, setConfirmP] = useState("");
-
+  const [isLoading, setIsLoading]=useState(false)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormData((prev) => ({
@@ -36,6 +36,7 @@ function Register() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsLoading(true)
     try {
       await registerUser(formData);
       toast.success("Registration successful!", {
@@ -56,6 +57,8 @@ function Register() {
           background: "red",
         },
       });
+    }finally{
+      setIsLoading(false)
     }
   };
 
