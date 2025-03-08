@@ -12,7 +12,7 @@ import { ReactNode, useState } from "react";
 
 interface CustomDialogProps {
   isOpen: boolean;
-  showFooter: boolean;
+  showFooter?: boolean;
   setIsOpen: (open: boolean) => void;
   title: string;
   description?: string;
