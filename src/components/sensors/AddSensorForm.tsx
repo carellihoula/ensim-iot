@@ -19,6 +19,10 @@ import { Copy } from "lucide-react";
 import { toast } from "sonner";
 import { useMenu } from "@/context/MenuContext";
 import { useSession } from "next-auth/react";
+import JsonViewer from "./JsonViewer";
+import { CustomDialog } from "../dialogs/CustomDialog";
+import UnitRequestForm from "./UnitRequestForm";
+import { messageAddUnitDialog } from "@/lib/utils/messageAddUnit";
 
 export default function AddSensorForm() {
   const { data: session } = useSession();
@@ -30,6 +34,7 @@ export default function AddSensorForm() {
       data: {},
     },
   });
+  const [isOpen, setIsOpen] = useState(false);
 
   const { selectedSensorEdited, setSelectedSensorEdited } = useMenu();
 
@@ -106,7 +111,7 @@ export default function AddSensorForm() {
   };
 
   const handleGrandeurBlur = (oldKey: string) => {
-    const newKey = tempNames[oldKey].trim();
+    const newKey = tempNames[oldKey]?.trim() || oldKey;
     if (!newKey) return;
 
     setSensor((prev) => {
@@ -191,14 +196,11 @@ export default function AddSensorForm() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2  gap-6 p-6">
-      <Card className="p-6 w-full max-w-[700px]">
+      <Card className="p-6 w-full max-w-[700px] ">
         <h2 className="text-xl font-semibold mb-4 text-center">
           Ajouter un Capteur
         </h2>
-        <p>
-          Vous ne trouvez pas votre unité ?{" "}
-          <span className="text-blue-600 hover:underline">Cliquez ici.</span>
-        </p>
+
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <Input
             type="text"
@@ -317,54 +319,38 @@ export default function AddSensorForm() {
             <Plus className="mr-2 w-5 h-5" /> Ajouter une Grandeur
           </Button>
 
-          <Button type="button" className="w-full mt-4" onClick={handleSubmit}>
+          <Button
+            type="button"
+            className="w-full mt-4 mb-4"
+            onClick={handleSubmit}
+          >
             {selectedSensorEdited
               ? "Modifier le Capteur"
               : "Ajouter le Capteur"}
           </Button>
         </form>
+        <div className="text-sm text-center mt-4 italic">
+          Vous ne trouvez pas votre unité ?{" "}
+          <span
+            className="text-blue-600 hover:underline cursor-pointer"
+            onClick={() => setIsOpen(true)}
+          >
+            Cliquez ici{" "}
+          </span>
+          pour en faire la demande
+        </div>
+        <CustomDialog
+          children={<UnitRequestForm />}
+          title="Formulaire de demande"
+          description={messageAddUnitDialog}
+          isOpen={isOpen}
+          setIsOpen={() => setIsOpen(!isOpen)}
+          showFooter={false}
+        />
       </Card>
 
-      {/* Affichage du JSON repliable */}
-      <div className=" flex-col gap-6 max-w-[700px] hidden lg:flex">
-        <Card
-          className="flex items-center gap-6 p-6 w-full max-w-[700px] h-[70px] cursor-pointer"
-          onClick={() => setShowJson(!showJson)}
-        >
-          <div className="flex items-center justify-between  w-full">
-            <h2 className="text-xl font-semibold">Visualisation en JSON</h2>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setShowJson(!showJson)}
-            >
-              {showJson ? (
-                <ChevronUp className="w-5 h-5" />
-              ) : (
-                <ChevronDown className="w-5 h-5" />
-              )}
-            </Button>
-          </div>
-        </Card>
-        {showJson && (
-          <div className="relative bg-gray-900 text-white p-4 rounded-lg overflow-auto text-sm max-h-60 w-full">
-            <button
-              onClick={handleCopy}
-              className="absolute top-2 right-2 p-1 bg-gray-700 rounded-md hover:bg-gray-600 transition"
-            >
-              <Copy className="w-5 h-5 text-white p-2 box-content" />
-            </button>
-            <pre>
-              <code>{JSON.stringify(sensor, null, 2)}</code>
-            </pre>
-            {copied && (
-              <div className="absolute bottom-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded">
-                Copié !
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Composant JSON Viewer */}
+      <JsonViewer data={sensor} />
     </div>
   );
 }
