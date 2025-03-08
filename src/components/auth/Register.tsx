@@ -26,7 +26,7 @@ function Register() {
     phone: "",
   });
   const [confirmP, setConfirmP] = useState("");
-  const [isLoading, setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setFormData((prev) => ({
@@ -37,7 +37,7 @@ function Register() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       await registerUser(formData);
       toast.success("Registration successful!", {
@@ -58,17 +58,17 @@ function Register() {
           background: "red",
         },
       });
-    }finally{
-      setIsLoading(false)
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <Card className=" py-7 px-7">
-      <CardHeader className="flex flex-row items-center justify-end">
-       
+      <CardHeader className="flex flex-row items-center justify-center">
+        <h1 className="text-lg font-bold">Inscription</h1>
       </CardHeader>
-      <AuthButtons />
+
       <CardContent className="space-y-2">
         <div className="space-y-1">
           <Label htmlFor="username">Nom d'utilisateur</Label>
@@ -123,7 +123,7 @@ function Register() {
           />
         </div>
         <div className="space-y-1">
-          <Label htmlFor="confirmPassword">Confirme Password</Label>
+          <Label htmlFor="confirmPassword">Confirm Password</Label>
           <Input
             className="h-11"
             id="confirmPassword"
@@ -136,15 +136,15 @@ function Register() {
           />
         </div>
       </CardContent>
-      <CardFooter className="flex justify-center">
+      <CardFooter className="flex flex-col gap-2 justify-center">
         <Button
-          className="w-full h-11 "
+          className="w-full  "
           onClick={handleSubmit}
           disabled={!(confirmP === formData.password)}
         >
-          
-          {isLoading ? (<Loader2/>):"S'inscrire"}
+          {isLoading ? <Loader2 /> : "S'inscrire"}
         </Button>
+        <AuthButtons />
       </CardFooter>
     </Card>
   );

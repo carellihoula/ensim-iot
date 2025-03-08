@@ -45,8 +45,10 @@ function Login() {
 
   return (
     <Card className=" py-7 px-7">
-      <CardHeader className="flex flex-row items-center justify-end"></CardHeader>
-      <AuthButtons />
+      <CardHeader className="flex flex-row items-center justify-center">
+        <h1 className="text-lg font-bold">Connexion</h1>
+      </CardHeader>
+
       <CardContent className="space-y-2">
         <div className="space-y-1">
           <Label htmlFor="email">Email</Label>
@@ -78,10 +80,11 @@ function Login() {
           </p>
         </Link>
       </CardContent>
-      <CardFooter className="flex justify-center">
-        <Button className="w-full h-11" onClick={handleSubmit}>
+      <CardFooter className="flex flex-col gap-2 justify-center">
+        <Button className="w-full" onClick={handleSubmit}>
           {isLoading ? <Loader2 /> : "Se Connecter"}
         </Button>
+        <AuthButtons />
       </CardFooter>
     </Card>
   );
