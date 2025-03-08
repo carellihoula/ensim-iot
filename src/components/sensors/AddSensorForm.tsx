@@ -195,6 +195,10 @@ export default function AddSensorForm() {
         <h2 className="text-xl font-semibold mb-4 text-center">
           Ajouter un Capteur
         </h2>
+        <p>
+          Vous ne trouvez pas votre unité ?{" "}
+          <span className="text-blue-600 hover:underline">Cliquez ici.</span>
+        </p>
         <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
           <Input
             type="text"

@@ -20,7 +20,7 @@ function Login() {
     email: "",
     password: "",
   });
-  const [isLoading, setIsLoading]=useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -32,7 +32,7 @@ function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true)
+    setIsLoading(true);
 
     await signIn("credentials", {
       email: formData.email,
@@ -40,7 +40,7 @@ function Login() {
       redirect: true,
       callbackUrl: "https://ensim-iot.onrender.com/",
     });
-    setIsLoading(false)
+    setIsLoading(false);
   };
 
   return (
@@ -80,7 +80,7 @@ function Login() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <Button className="w-full h-11" onClick={handleSubmit}>
-          {isLoading ? (<Loader2/>):"Se Connecter"}
+          {isLoading ? <Loader2 /> : "Se Connecter"}
         </Button>
       </CardFooter>
     </Card>
