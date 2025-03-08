@@ -16,6 +16,7 @@ import Link from "next/link";
 import { User } from "../types/UserTypes";
 import { registerUser } from "@/services/auth";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 function Register() {
   const [formData, setFormData] = useState<User>({
@@ -148,7 +149,8 @@ function Register() {
           onClick={handleSubmit}
           disabled={!(confirmP === formData.password)}
         >
-          S'inscrire
+          
+          {isLoading ? (<Loader2/>):"S'inscrire"}
         </Button>
       </CardFooter>
     </Card>
