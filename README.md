@@ -203,12 +203,12 @@ This project is licensed under the MIT License
 ## 📸 Screenshots
 
 ### Dashboard Overview
-![Login](./login.png)
-![Register](./register.png)
-![Dashboard](./accueil.png)
-![List of Devices](./list.png)
-![Add a new device](./ajout.png)
-![new unit request](./demande.png)
+![Login](./public/login.png)
+![Register](./public/register.png)
+![Dashboard](./public/accueil.png)
+![List of Devices](./public/list.png)
+![Add a new device](./public/ajout.png)
+![new unit request](./public/demande.png)
 
 ## 🔮 Future Enhancements
 
