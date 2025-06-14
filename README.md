@@ -200,6 +200,15 @@ The platform supports various data types and automatically handles unit conversi
 
 This project is licensed under the MIT License
 
+## 📸 Screenshots
+
+### Dashboard Overview
+![Login](./login.png)
+![Register](./register.png)
+![Dashboard](./accueil.png)
+![List of Devices](./list.png)
+![Add a new device](./ajout.png)
+![new unit request](./demande.png)
 
 ## 🔮 Future Enhancements
 
